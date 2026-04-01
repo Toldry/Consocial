@@ -23,7 +23,11 @@ sealed class Command {
      * @property follower the user who is subscribing
      * @property followee the user being subscribed to
      */
-    data class Follow(val follower: String, val followee: String) : Command()
+    data class Follow(val follower: String, val followee: String) : Command() {
+        init {
+            require(follower != followee) { "A user cannot follow themselves" }
+        }
+    }
 
     /**
      * Displays the aggregated wall of [username] and all users they follow.

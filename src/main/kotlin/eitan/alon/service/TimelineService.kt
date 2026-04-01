@@ -13,5 +13,6 @@ class TimelineService(private val messageRepository: MessageRepository) {
      * @return messages in reverse chronological order
      * @throws UserNotFoundException if [username] has never posted a message
      */
-    fun getTimeline(username: String): List<Message> = TODO()
+    fun getTimeline(username: String): List<Message> =
+        messageRepository.findByAuthor(username).sortedByDescending { it.postedAt }
 }

@@ -65,27 +65,83 @@ class CommandHandlerTest {
 
     @Test
     fun `reading unknown user returns error message`() {
-        assertEquals("Username 'UnknownUser' not found.", handler.handleCommand(Command.Read("UnknownUser")))
+        assertEquals("User not found: 'UnknownUser'", handler.handleCommand(Command.Read("UnknownUser")))
     }
 
     @Test
     fun `wall of unknown user returns error message`() {
-        assertEquals("Username 'UnknownUser' not found.", handler.handleCommand(Command.Wall("UnknownUser")))
+        assertEquals("User not found: 'UnknownUser'", handler.handleCommand(Command.Wall("UnknownUser")))
     }
 
     @Test
     fun `following with unknown follower returns error message`() {
         userRepository.save(User("Alice"))
 
-        assertEquals("Username 'Unknown' not found.", handler.handleCommand(Command.Follow("Unknown", "Alice")))
+        assertEquals("User not found: 'Unknown'", handler.handleCommand(Command.Follow("Unknown", "Alice")))
     }
 
     @Test
     fun `following with unknown followee returns error message`() {
         userRepository.save(User("Charlie"))
 
-        assertEquals("Username 'Unknown' not found.", handler.handleCommand(Command.Follow("Charlie", "Unknown")))
+        assertEquals("User not found: 'Unknown'", handler.handleCommand(Command.Follow("Charlie", "Unknown")))
     }
+
+    // --- formatTime ---
+
+    private fun readAfterSeconds(seconds: Long): String? {
+        handler.handleCommand(Command.Post("Alice", "msg"))
+        clock.advanceTo(baseTime.plusSeconds(seconds))
+        return handler.handleCommand(Command.Read("Alice"))
+    }
+
+
+    @Test
+    fun `formatTime shows 0 seconds`() {
+        assertEquals("msg (0 seconds ago)", readAfterSeconds(0))
+    }
+
+    @Test
+    fun `formatTime shows 1 second`() {
+        assertEquals("msg (1 second ago)", readAfterSeconds(1))
+    }
+
+    @Test
+    fun `formatTime shows 30 seconds`() {
+        assertEquals("msg (30 seconds ago)", readAfterSeconds(30))
+    }
+
+    @Test
+    fun `formatTime shows 1 minute`() {
+        assertEquals("msg (1 minute ago)", readAfterSeconds(60+5))
+    }
+
+    @Test
+    fun `formatTime shows 2 minutes`() {
+        assertEquals("msg (2 minutes ago)", readAfterSeconds(2*60 + 5))
+    }
+
+    @Test
+    fun `formatTime shows 1 hour`() {
+        assertEquals("msg (1 hour ago)", readAfterSeconds(60*60))
+    }
+
+    @Test
+    fun `formatTime shows 2 hours`() {
+        assertEquals("msg (2 hours ago)", readAfterSeconds(2*60*60))
+    }
+
+    @Test
+    fun `formatTime shows 1 day`() {
+        assertEquals("msg (1 day ago)", readAfterSeconds(24*60*60))
+    }
+
+    @Test
+    fun `formatTime shows 2 days`() {
+        assertEquals("msg (2 days ago)", readAfterSeconds(2*24*60*60))
+    }
+
+    // --- Wall ---
 
     @Test
     fun `wall shows own and followed messages newest first with author prefix`() {

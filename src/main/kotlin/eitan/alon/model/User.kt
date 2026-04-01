@@ -34,7 +34,9 @@ class User(val username: String) {
      *
      * @param followerUsername the username of the user who is following this user
      */
-    internal fun addFollower(followerUsername: String): Unit = TODO()
+    internal fun addFollower(followerUsername: String) {
+        _followers.add(followerUsername)
+    }
 
     /**
      * Records that this user now follows [followeeUsername].
@@ -42,7 +44,9 @@ class User(val username: String) {
      *
      * @param followeeUsername the username of the user being followed
      */
-    internal fun addFollowee(followeeUsername: String): Unit = TODO()
+    internal fun addFollowee(followeeUsername: String) {
+        _followees.add(followeeUsername)
+    }
 
 
 }

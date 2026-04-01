@@ -10,5 +10,5 @@ interface Clock {
 
 /** Production implementation of [Clock] */
 class SystemClock : Clock {
-    override fun now(): Instant = TODO()
+    override fun now(): Instant = Instant.now()
 }

@@ -5,4 +5,4 @@ package eitan.alon.model
  *
  * @param username the username that could not be found
  */
-class UserNotFoundException(username: String) : RuntimeException("User not found: '$username'")
+class UserNotFoundException(val username: String) : RuntimeException("User not found: '$username'")

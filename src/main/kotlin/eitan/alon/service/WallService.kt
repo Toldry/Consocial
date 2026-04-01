@@ -24,5 +24,13 @@ class WallService(
      * @return messages from the user and their followees in reverse chronological order
      * @throws UserNotFoundException if [username] has never been registered
      */
-    fun getWall(username: String): List<Message> = TODO()
+    fun getWall(username: String): List<Message> {
+        val user = userRepository.findByUsername(username)
+        val usernames = setOf(username) + user.followees
+        return usernames
+            .flatMap { name ->
+                try { messageRepository.findByAuthor(name) } catch (_: UserNotFoundException) { emptyList() }
+            }
+            .sortedByDescending { it.postedAt }
+    }
 }
