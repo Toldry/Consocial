@@ -17,7 +17,7 @@ No other dependencies are required. There are no external frameworks; the projec
 ## Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Toldry/Consocial
 cd consocial
 ```
 
