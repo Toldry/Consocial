@@ -11,6 +11,5 @@ class InMemoryMessageRepository : MessageRepository {
         messages.getOrPut(message.author) { mutableListOf() }.add(message)
     }
 
-    override fun findByAuthor(author: String): List<Message> =
-        messages[author] ?: throw UserNotFoundException(author)
+    override fun findByAuthor(author: String): List<Message> = messages[author] ?: throw UserNotFoundException(author)
 }

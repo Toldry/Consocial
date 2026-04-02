@@ -5,7 +5,6 @@ import eitan.alon.model.UserNotFoundException
 import eitan.alon.repository.MessageRepository
 
 class TimelineService(private val messageRepository: MessageRepository) {
-
     /**
      * Returns all messages posted by [username], sorted newest-first.
      *
@@ -13,6 +12,5 @@ class TimelineService(private val messageRepository: MessageRepository) {
      * @return messages in reverse chronological order
      * @throws UserNotFoundException if [username] has never posted a message
      */
-    fun getTimeline(username: String): List<Message> =
-        messageRepository.findByAuthor(username).sortedByDescending { it.postedAt }
+    fun getTimeline(username: String): List<Message> = messageRepository.findByAuthor(username).sortedByDescending { it.postedAt }
 }

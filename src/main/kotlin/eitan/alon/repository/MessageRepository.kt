@@ -3,7 +3,6 @@ package eitan.alon.repository
 import eitan.alon.model.Message
 
 interface MessageRepository {
-
     /**
      * Persists a [message].
      *

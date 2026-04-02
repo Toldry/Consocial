@@ -9,7 +9,6 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 class InMemoryUserRepositoryTest {
-
     private lateinit var repository: InMemoryUserRepository
 
     @BeforeTest

@@ -28,50 +28,50 @@ class CommandHandler(
     private val wallService: WallService,
     private val clock: Clock,
 ) {
-
     /**
      * Executes [command] and returns output to be printed to the console.
      *
      * @param command the command to execute
      * @return a formatted string to display, or `null` if the command produces no output
      */
-    fun handleCommand(command: Command): String? = when (command) {
-        is Command.Post -> {
-            try {
-                userRepository.findByUsername(command.username)
-            } catch (_: UserNotFoundException) {
-                userRepository.save(User(command.username))
-            }
-            messageRepository.save(Message(command.username, command.message, clock.now()))
-            null
-        }
-        is Command.Follow -> {
-            try {
-                userRepository.recordFollow(command.follower, command.followee)
+    fun handleCommand(command: Command): String? =
+        when (command) {
+            is Command.Post -> {
+                try {
+                    userRepository.findByUsername(command.username)
+                } catch (_: UserNotFoundException) {
+                    userRepository.save(User(command.username))
+                }
+                messageRepository.save(Message(command.username, command.message, clock.now()))
                 null
-            } catch (e: UserNotFoundException) {
-                e.message
+            }
+            is Command.Follow -> {
+                try {
+                    userRepository.recordFollow(command.follower, command.followee)
+                    null
+                } catch (e: UserNotFoundException) {
+                    e.message
+                }
+            }
+            is Command.Read -> {
+                try {
+                    val now = clock.now()
+                    timelineService.getTimeline(command.username)
+                        .joinToString("\n") { "${it.content} (${formatTime(it.postedAt, now)})" }
+                } catch (e: UserNotFoundException) {
+                    e.message
+                }
+            }
+            is Command.Wall -> {
+                try {
+                    val now = clock.now()
+                    wallService.getWall(command.username)
+                        .joinToString("\n") { "${it.author} - ${it.content} (${formatTime(it.postedAt, now)})" }
+                } catch (e: UserNotFoundException) {
+                    e.message
+                }
             }
         }
-        is Command.Read -> {
-            try {
-                val now = clock.now()
-                timelineService.getTimeline(command.username)
-                    .joinToString("\n") { "${it.content} (${formatTime(it.postedAt, now)})" }
-            } catch (e: UserNotFoundException) {
-                e.message
-            }
-        }
-        is Command.Wall -> {
-            try {
-                val now = clock.now()
-                wallService.getWall(command.username)
-                    .joinToString("\n") { "${it.author} - ${it.content} (${formatTime(it.postedAt, now)})" }
-            } catch (e: UserNotFoundException) {
-                e.message
-            }
-        }
-    }
 
     /**
      * Formats the duration between [postedAt] and [now] as a human-readable relative string,
@@ -81,17 +81,21 @@ class CommandHandler(
      * @param now the current instant
      * @return a relative time string
      */
-    private fun formatTime(postedAt: Instant, now: Instant): String {
+    private fun formatTime(
+        postedAt: Instant,
+        now: Instant,
+    ): String {
         val days = ChronoUnit.DAYS.between(postedAt, now)
         val hours = ChronoUnit.HOURS.between(postedAt, now)
         val minutes = ChronoUnit.MINUTES.between(postedAt, now)
         val seconds = ChronoUnit.SECONDS.between(postedAt, now)
-        val (count, unit) = when {
-            days >= 1 -> days to "day"
-            hours >= 1 -> hours to "hour"
-            minutes >= 1 -> minutes to "minute"
-            else -> seconds to "second"
-        }
+        val (count, unit) =
+            when {
+                days >= 1 -> days to "day"
+                hours >= 1 -> hours to "hour"
+                minutes >= 1 -> minutes to "minute"
+                else -> seconds to "second"
+            }
         return "$count ${if (count == 1L) unit else "${unit}s"} ago"
     }
 }

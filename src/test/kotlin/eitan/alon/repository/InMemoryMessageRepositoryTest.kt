@@ -9,7 +9,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class InMemoryMessageRepositoryTest {
-
     private val baseTime = Instant.parse("2024-01-01T12:00:00Z")
     private lateinit var repository: InMemoryMessageRepository
 

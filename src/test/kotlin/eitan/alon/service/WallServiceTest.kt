@@ -12,7 +12,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class WallServiceTest {
-
     private lateinit var messageRepository: InMemoryMessageRepository
     private lateinit var userRepository: InMemoryUserRepository
     private lateinit var wallService: WallService

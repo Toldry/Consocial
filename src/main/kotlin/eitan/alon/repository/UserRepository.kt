@@ -5,7 +5,6 @@ import eitan.alon.model.UserNotFoundException
 
 /** Persistence contract for [User] entities and their follow relationships. */
 interface UserRepository {
-
     /**
      * Persists [user], overwriting any existing entry for the same username.
      *
@@ -30,5 +29,8 @@ interface UserRepository {
      * @param followeeUsername the user being subscribed to
      * @throws UserNotFoundException if either username is not found
      */
-    fun recordFollow(followerUsername: String, followeeUsername: String)
+    fun recordFollow(
+        followerUsername: String,
+        followeeUsername: String,
+    )
 }

@@ -6,7 +6,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class UserTest {
-
     private lateinit var user: User
 
     @BeforeTest

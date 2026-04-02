@@ -10,7 +10,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class TimelineServiceTest {
-
     private lateinit var repository: InMemoryMessageRepository
     private lateinit var service: TimelineService
     private val baseTime = Instant.parse("2024-01-01T12:00:00Z")

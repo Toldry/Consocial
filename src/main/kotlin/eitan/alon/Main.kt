@@ -13,12 +13,13 @@ fun main() {
     val clock = SystemClock()
     val messageRepository = InMemoryMessageRepository()
     val userRepository = InMemoryUserRepository()
-    val handler = CommandHandler(
-        messageRepository = messageRepository,
-        userRepository = userRepository,
-        timelineService = TimelineService(messageRepository),
-        wallService = WallService(messageRepository, userRepository),
-        clock = clock,
-    )
+    val handler =
+        CommandHandler(
+            messageRepository = messageRepository,
+            userRepository = userRepository,
+            timelineService = TimelineService(messageRepository),
+            wallService = WallService(messageRepository, userRepository),
+            clock = clock,
+        )
     SocialNetworkApp(handler, CommandParser()).run()
 }

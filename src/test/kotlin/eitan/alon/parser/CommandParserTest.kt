@@ -8,7 +8,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class CommandParserTest {
-
     private val parser = CommandParser()
 
     // --- Posting ---
@@ -18,6 +17,14 @@ class CommandParserTest {
         assertEquals(
             Command.Post("Alice", "I love the weather today"),
             parser.parse("Alice -> I love the weather today"),
+        )
+    }
+
+    @Test
+    fun `parses posting command with whitespaces`() {
+        assertEquals(
+            Command.Post("Alice", "I love the weather today"),
+            parser.parse("  Alice    ->    I love the weather today"),
         )
     }
 
@@ -74,7 +81,6 @@ class CommandParserTest {
         }
     }
 
-
     @Test
     fun `throws IllegalArgumentException for non-alphanumeric username`() {
         assertFailsWith<IllegalArgumentException> {
@@ -111,11 +117,27 @@ class CommandParserTest {
         }
     }
 
+    @Test
+    fun `parses following command with whitespaces`() {
+        assertEquals(
+            Command.Follow("Alice", "Charlie"),
+            parser.parse("    Alice  follows    Charlie  "),
+        )
+    }
+
     // --- Wall ---
 
     @Test
     fun `parses wall command`() {
         assertEquals(Command.Wall("Charlie"), parser.parse("Charlie wall"))
+    }
+
+    @Test
+    fun `parses wall command with whitespace`() {
+        assertEquals(
+            Command.Wall("Charlie"),
+            parser.parse("       Charlie   wall "),
+        )
     }
 
     // --- Username validation ---
@@ -190,7 +212,6 @@ class CommandParserTest {
         }
     }
 
-
     // --- General invalid input ---
 
     @Test
@@ -206,5 +227,4 @@ class CommandParserTest {
             parser.parse("???")
         }
     }
-
 }

@@ -13,7 +13,6 @@ import eitan.alon.model.User
  * - `"Alice"` → [Command.Read]
  */
 class CommandParser {
-
     private companion object {
         val POST_PATTERN = Regex("""^(\S+)\s*->\s*(.+)$""")
         val FOLLOW_PATTERN = Regex("""^(\S+)\s+follows\s+(\S+)$""")

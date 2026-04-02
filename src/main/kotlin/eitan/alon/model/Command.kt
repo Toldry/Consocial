@@ -1,7 +1,6 @@
 package eitan.alon.model
 
 sealed class Command {
-
     /**
      * Posts a message to [username]'s personal timeline.
      *

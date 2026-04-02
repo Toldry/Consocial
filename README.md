@@ -33,6 +33,15 @@ The Gradle wrapper (`gradlew`) is included — no separate Gradle installation i
 
 This compiles the main and test sources and runs the full test suite. Compiled classes are placed under `build/`.
 
+
+## Linting
+
+```bash
+./gradlew ktlintFormat
+```
+
+Reformats all Kotlin files.
+
 ---
 
 ## Running

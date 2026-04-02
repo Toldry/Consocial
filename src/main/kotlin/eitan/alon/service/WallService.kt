@@ -15,7 +15,6 @@ class WallService(
     private val messageRepository: MessageRepository,
     private val userRepository: UserRepository,
 ) {
-
     /**
      * Returns the aggregated wall for [username], including their own messages
      * and those of every user they follow, sorted newest-first.
@@ -29,7 +28,11 @@ class WallService(
         val usernames = setOf(username) + user.followees
         return usernames
             .flatMap { name ->
-                try { messageRepository.findByAuthor(name) } catch (_: UserNotFoundException) { emptyList() }
+                try {
+                    messageRepository.findByAuthor(name)
+                } catch (_: UserNotFoundException) {
+                    emptyList()
+                }
             }
             .sortedByDescending { it.postedAt }
     }

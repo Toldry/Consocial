@@ -11,10 +11,12 @@ class InMemoryUserRepository : UserRepository {
         users[user.username] = user
     }
 
-    override fun findByUsername(username: String): User =
-        users[username] ?: throw UserNotFoundException(username)
+    override fun findByUsername(username: String): User = users[username] ?: throw UserNotFoundException(username)
 
-    override fun recordFollow(followerUsername: String, followeeUsername: String) {
+    override fun recordFollow(
+        followerUsername: String,
+        followeeUsername: String,
+    ) {
         val follower = findByUsername(followerUsername)
         val followee = findByUsername(followeeUsername)
         follower.addFollowee(followeeUsername)

@@ -10,7 +10,6 @@ package eitan.alon.model
  * @property username the unique alphanumeric identifier for this user
  */
 class User(val username: String) {
-
     companion object {
         /** Minimum number of characters in a valid username. */
         const val MIN_USERNAME_LENGTH = 2
@@ -47,6 +46,4 @@ class User(val username: String) {
     internal fun addFollowee(followeeUsername: String) {
         _followees.add(followeeUsername)
     }
-
-
 }

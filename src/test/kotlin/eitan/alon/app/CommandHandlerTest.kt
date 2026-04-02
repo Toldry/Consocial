@@ -2,6 +2,7 @@ package eitan.alon.app
 
 import eitan.alon.clock.FixedClock
 import eitan.alon.model.Command
+import eitan.alon.model.User
 import eitan.alon.repository.InMemoryMessageRepository
 import eitan.alon.repository.InMemoryUserRepository
 import eitan.alon.service.TimelineService
@@ -11,10 +12,8 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
-import eitan.alon.model.User
 
 class CommandHandlerTest {
-
     private val baseTime = Instant.parse("2024-01-01T12:00:00Z")
     private lateinit var messageRepository: InMemoryMessageRepository
     private lateinit var userRepository: InMemoryUserRepository
@@ -26,13 +25,14 @@ class CommandHandlerTest {
         messageRepository = InMemoryMessageRepository()
         userRepository = InMemoryUserRepository()
         clock = FixedClock(baseTime)
-        handler = CommandHandler(
-            messageRepository = messageRepository,
-            userRepository = userRepository,
-            timelineService = TimelineService(messageRepository),
-            wallService = WallService(messageRepository, userRepository),
-            clock = clock,
-        )
+        handler =
+            CommandHandler(
+                messageRepository = messageRepository,
+                userRepository = userRepository,
+                timelineService = TimelineService(messageRepository),
+                wallService = WallService(messageRepository, userRepository),
+                clock = clock,
+            )
     }
 
     @Test
@@ -95,7 +95,6 @@ class CommandHandlerTest {
         return handler.handleCommand(Command.Read("Alice"))
     }
 
-
     @Test
     fun `formatTime shows 0 seconds`() {
         assertEquals("msg (0 seconds ago)", readAfterSeconds(0))
@@ -113,32 +112,32 @@ class CommandHandlerTest {
 
     @Test
     fun `formatTime shows 1 minute`() {
-        assertEquals("msg (1 minute ago)", readAfterSeconds(60+5))
+        assertEquals("msg (1 minute ago)", readAfterSeconds(60 + 5))
     }
 
     @Test
     fun `formatTime shows 2 minutes`() {
-        assertEquals("msg (2 minutes ago)", readAfterSeconds(2*60 + 5))
+        assertEquals("msg (2 minutes ago)", readAfterSeconds(2 * 60 + 5))
     }
 
     @Test
     fun `formatTime shows 1 hour`() {
-        assertEquals("msg (1 hour ago)", readAfterSeconds(60*60))
+        assertEquals("msg (1 hour ago)", readAfterSeconds(60 * 60))
     }
 
     @Test
     fun `formatTime shows 2 hours`() {
-        assertEquals("msg (2 hours ago)", readAfterSeconds(2*60*60))
+        assertEquals("msg (2 hours ago)", readAfterSeconds(2 * 60 * 60))
     }
 
     @Test
     fun `formatTime shows 1 day`() {
-        assertEquals("msg (1 day ago)", readAfterSeconds(24*60*60))
+        assertEquals("msg (1 day ago)", readAfterSeconds(24 * 60 * 60))
     }
 
     @Test
     fun `formatTime shows 2 days`() {
-        assertEquals("msg (2 days ago)", readAfterSeconds(2*24*60*60))
+        assertEquals("msg (2 days ago)", readAfterSeconds(2 * 24 * 60 * 60))
     }
 
     // --- Wall ---

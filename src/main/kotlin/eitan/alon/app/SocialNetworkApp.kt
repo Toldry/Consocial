@@ -13,7 +13,6 @@ class SocialNetworkApp(
     private val commandHandler: CommandHandler,
     private val parser: CommandParser,
 ) {
-
     /**
      * Starts the interactive console loop.
      *
@@ -32,7 +31,7 @@ class SocialNetworkApp(
               <user> wall                View a user's wall (own posts + followed users)
 
             Press Ctrl+C to exit.
-            """.trimIndent()
+            """.trimIndent(),
         )
         while (true) {
             print("> ")
