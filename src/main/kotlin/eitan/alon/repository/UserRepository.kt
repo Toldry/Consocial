@@ -1,7 +1,6 @@
 package eitan.alon.repository
 
 import eitan.alon.model.User
-import eitan.alon.model.UserNotFoundException
 
 /** Persistence contract for [User] entities and their follow relationships. */
 interface UserRepository {
@@ -13,13 +12,12 @@ interface UserRepository {
     fun save(user: User)
 
     /**
-     * Returns the [User] with the given [username].
+     * Returns the [User] with the given [username], or `null` if not found.
      *
      * @param username the username to look up
-     * @return the matching [User]
-     * @throws UserNotFoundException if no user with [username] has been saved
+     * @return the matching [User], or `null` if no user with [username] has been saved
      */
-    fun findByUsername(username: String): User
+    fun findByUsername(username: String): User?
 
     /**
      * Adds [followeeUsername] to the follower's followees and [followerUsername]
@@ -27,7 +25,7 @@ interface UserRepository {
      *
      * @param followerUsername the user who is subscribing
      * @param followeeUsername the user being subscribed to
-     * @throws UserNotFoundException if either username is not found
+     * @throws eitan.alon.model.UserNotFoundException if either username is not found
      */
     fun recordFollow(
         followerUsername: String,

@@ -24,7 +24,7 @@ class WallService(
      * @throws UserNotFoundException if [username] has never been registered
      */
     fun getWall(username: String): List<Message> {
-        val user = userRepository.findByUsername(username)
+        val user = userRepository.findByUsername(username) ?: throw UserNotFoundException(username)
         val usernames = setOf(username) + user.followees
         return usernames
             .flatMap { name ->

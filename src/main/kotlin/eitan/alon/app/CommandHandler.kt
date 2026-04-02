@@ -37,11 +37,7 @@ class CommandHandler(
     fun handleCommand(command: Command): String? =
         when (command) {
             is Command.Post -> {
-                try {
-                    userRepository.findByUsername(command.username)
-                } catch (_: UserNotFoundException) {
-                    userRepository.save(User(command.username))
-                }
+                userRepository.findByUsername(command.username) ?: userRepository.save(User(command.username))
                 messageRepository.save(Message(command.username, command.message, clock.now()))
                 null
             }

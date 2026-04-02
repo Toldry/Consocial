@@ -6,6 +6,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class InMemoryUserRepositoryTest {
@@ -17,17 +18,15 @@ class InMemoryUserRepositoryTest {
     }
 
     @Test
-    fun `findByUsername throws UserNotFoundException for unknown user`() {
-        assertFailsWith<UserNotFoundException> {
-            repository.findByUsername("Alice")
-        }
+    fun `findByUsername returns null for unknown user`() {
+        assertNull(repository.findByUsername("Alice"))
     }
 
     @Test
     fun `findByUsername returns saved user`() {
         repository.save(User("Alice"))
 
-        assertEquals("Alice", repository.findByUsername("Alice").username)
+        assertEquals("Alice", repository.findByUsername("Alice")!!.username)
     }
 
     @Test
@@ -37,8 +36,8 @@ class InMemoryUserRepositoryTest {
 
         repository.recordFollow("Alice", "Bob")
 
-        val alice = repository.findByUsername("Alice")
-        val bob = repository.findByUsername("Bob")
+        val alice = repository.findByUsername("Alice")!!
+        val bob = repository.findByUsername("Bob")!!
         assertTrue("Bob" in alice.followees)
         assertTrue("Alice" in bob.followers)
     }
@@ -51,8 +50,8 @@ class InMemoryUserRepositoryTest {
         repository.recordFollow("Alice", "Bob")
         repository.recordFollow("Alice", "Bob")
 
-        assertEquals(1, repository.findByUsername("Alice").followees.size)
-        assertEquals(1, repository.findByUsername("Bob").followers.size)
+        assertEquals(1, repository.findByUsername("Alice")!!.followees.size)
+        assertEquals(1, repository.findByUsername("Bob")!!.followers.size)
     }
 
     @Test
